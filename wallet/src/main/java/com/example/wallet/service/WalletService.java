@@ -24,8 +24,18 @@ public class WalletService {
 
 
     public String performOperation(WalletOperation operation) {
+//        Wallet wallet = walletRepository.findById(operation.getWalletId())
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "кошелек не найден"));
+
+        // Поиск кошелька по walletId
         Wallet wallet = walletRepository.findById(operation.getWalletId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "кошелек не найден"));
+                .orElseGet(() -> {
+                    // Если кошелек не найден, создаем новый
+                    Wallet newWallet = new Wallet();
+                    newWallet.setWalletId(operation.getWalletId());
+                    newWallet.setBalance(0.0);
+                    return walletRepository.save(newWallet);
+                });
 
         if (operation.getOperationType().equals("DEPOSIT")) {
             wallet.setBalance(wallet.getBalance() + operation.getAmount());

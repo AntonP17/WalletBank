@@ -6,11 +6,19 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <changeSet id="1" author="yourname">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="wallet"/>
+            </not>
+        </preConditions>
         <createTable tableName="wallet">
             <column name="wallet_id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="balance" type="double precision">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
