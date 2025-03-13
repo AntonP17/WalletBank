@@ -1,9 +1,6 @@
 package com.example.wallet.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -13,6 +10,7 @@ public class Wallet {
 
     @Id
     @Column(name = "wallet_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID walletId;
     @Column(name = "balance")
     private double balance;
