@@ -10,7 +10,6 @@ public class Wallet {
 
     @Id
     @Column(name = "wallet_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID walletId;
 
     @Column(name = "balance")

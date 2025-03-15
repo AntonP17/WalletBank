@@ -5,10 +5,13 @@ import com.example.wallet.model.WalletOperation;
 import com.example.wallet.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.annotation.Backoff;
 
 import java.util.UUID;
 
@@ -23,7 +26,11 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
-
+    @Retryable(
+            value = { ObjectOptimisticLockingFailureException.class }, // Обрабатываем конфликты версий
+            maxAttempts = 3, // Количество попыток
+            backoff = @Backoff(delay = 100) // Задержка между попытками
+    )
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public String performOperation(WalletOperation operation) {
 //        Wallet wallet = walletRepository.findById(operation.getWalletId())
