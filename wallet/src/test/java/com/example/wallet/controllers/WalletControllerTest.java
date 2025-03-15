@@ -89,7 +89,8 @@ public class WalletControllerTest {
     void testGetWalletNotFound() throws Exception {
         UUID walletId = UUID.randomUUID();
 
-        when(walletService.getWallet(walletId)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Кошелек не найден"));
+        when(walletService.getWallet(walletId))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Кошелек не найден"));
 
         mockMvc.perform(get("/api/v1/wallets/" + walletId))
                 .andExpect(status().isNotFound());
