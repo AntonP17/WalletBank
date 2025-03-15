@@ -12,10 +12,23 @@ public class Wallet {
     @Column(name = "wallet_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID walletId;
+
     @Column(name = "balance")
     private double balance;
 
+    @Version
+    @Column(name = "version", nullable = false)
+    private int version;
+
     public Wallet() {
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public UUID getWalletId() {

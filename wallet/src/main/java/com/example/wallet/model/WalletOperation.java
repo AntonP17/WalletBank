@@ -1,10 +1,17 @@
 package com.example.wallet.model;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.util.UUID;
 
 public class WalletOperation {
-
+    @NotNull(message = "walletId is required")
     private UUID walletId;
+
+    @NotNull(message = "operationType is required")
     private String operationType;
+
+    @Positive(message = "amount must be positive")
     private double amount;
 
     public UUID getWalletId() {

@@ -6,13 +6,14 @@ import com.example.wallet.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
 @Service
-@Transactional
+//@Transactional
 public class WalletService {
 
     private final WalletRepository walletRepository;
@@ -23,6 +24,7 @@ public class WalletService {
     }
 
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public String performOperation(WalletOperation operation) {
 //        Wallet wallet = walletRepository.findById(operation.getWalletId())
 //                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "кошелек не найден"));
@@ -50,7 +52,7 @@ public class WalletService {
         }
 
         walletRepository.save(wallet);
-        return "операция выполнена";
+        return "Операция выполнена успешно. Текущий баланс: " + wallet.getBalance();
     }
 
     public Wallet getWallet(UUID walletId) {
